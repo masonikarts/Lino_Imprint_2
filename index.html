@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Lino Imprint_002</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+    <script src="https://aframe.io/releases/1.2.0/aframe.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/mind-ar@1.2.5/dist/mindar-image-aframe.prod.js"></script>
+    <style>
+      body { margin: 0; overflow: hidden; }
+    </style>
+    <script>
+      AFRAME.registerComponent('videohandler', {
+        init: function () {
+          var marker = this.el;
+          var video = document.querySelector("#animated-video");
+
+          marker.addEventListener('targetFound', function() {
+            video.play();
+            video.muted = false;
+          });
+
+          marker.addEventListener('targetLost', function() {
+            video.pause();
+            video.muted = true;
+          });
+        }
+      });
+    </script>
+  </head>
+  <body>
+    <a-scene
+      mindar-image="imageTargetSrc: targets.mind; autoStart: true;"
+      color-space="sRGB"
+      renderer="colorManagement: true, physicallyCorrectLights"
+      vr-mode-ui="enabled: false"
+      device-orientation-permission-ui="enabled: false"
+    >
+      <a-assets>
+        <video id="animated-video" src="https://raw.githubusercontent.com/masonikarts/Lino_Imprint_2/main/Lino_2.mp4" preload="auto" loop crossorigin="anonymous" playsinline></video>
+      </a-assets>
+      <a-entity mindar-image-target="targetIndex: 0" videohandler>
+        <a-video src="#animated-video" width="1.5" height="2.0" position="0 -0.5 0" rotation="0 0 0" autoplay loop playsinline></a-video>
+      </a-entity>
+      <a-camera position="0 0 0" look-controls></a-camera>
+    </a-scene>
+  </body>
+</html>
